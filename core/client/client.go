@@ -15,14 +15,8 @@ type Client struct {
 	Config Config
 }
 
-// A APIRequest is used to package data/params and operation
-// used by client to send the request
-type APIRequest struct {
-	Method string
-}
-
 //newHTTPrequest
-func newHTTPrequest() {
+func newHTTPrequest(x Request) {
 	_, _ = resty.R().Get("http://httpbin.org/get")
 
 	return
