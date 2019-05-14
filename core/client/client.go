@@ -1,9 +1,6 @@
 package client
 
 import (
-	"fmt"
-
-	u "github.com/RafPe/go-newrelic/core/nrq"
 	resty "gopkg.in/resty.v1"
 )
 
@@ -16,12 +13,17 @@ type Config struct {
 // used by all service clients.
 type Client struct {
 	Config Config
+	Resty  *resty.Client
 }
 
-//newHTTPrequest
-func newHTTPrequest(x u.Nrq) {
-	fmt.Println(x)
-	_, _ = resty.R().Get("http://httpbin.org/get")
+//New
+func New(cfg Config) *Client {
+	svc := &Client{
+		Config: cfg,
+		Resty:  resty.New(),
+	}
 
-	return
+	svc.Resty.SetDebug(true)
+
+	return svc
 }
