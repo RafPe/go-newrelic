@@ -1,6 +1,9 @@
-package core
+package client
 
 import (
+	"fmt"
+
+	u "github.com/RafPe/go-newrelic/core/nrq"
 	resty "gopkg.in/resty.v1"
 )
 
@@ -16,7 +19,8 @@ type Client struct {
 }
 
 //newHTTPrequest
-func newHTTPrequest(x Request) {
+func newHTTPrequest(x u.Nrq) {
+	fmt.Println(x)
 	_, _ = resty.R().Get("http://httpbin.org/get")
 
 	return
