@@ -2,28 +2,27 @@ package syntehics
 
 import (
 	"fmt"
-	"os"
 
-	resty "gopkg.in/resty.v1"
+	"github.com/RafPe/go-newrelic/core/requests"
 )
 
 // GetAllMonitors returns all monitors
 // configured on a given account
 func (c *Syntethics) GetAllMonitors() *SyntethicMonitors {
 
-	req := c.Client.Resty.R().
-		SetQueryParams(map[string]string{
+	newRequest := requests.Nrq{
+		Method: "GET",
+		QueryParams: map[string]string{
 			"limit":  "100",
 			"offset": "0",
-		}).
-		SetHeader("X-Api-Key", os.Getenv("NEWRELIC_APIKEY")).
-		SetResult(&SyntethicMonitors{})
+		},
+		RequestModel: &SyntethicMonitors{},
+		Headers:      nil,
+	}
 
-	resp, err := req.Execute(resty.MethodGet, "https://synthetics.newrelic.com/synthetics/api/v3/monitors")
+	resp, err := c.Client.ExecuteRequest(&newRequest)
 
-	resp.Header()
-
-	fmt.Println(err, resp.Result())
+	fmt.Println(resp, err)
 
 	return nil
 }

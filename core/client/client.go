@@ -1,6 +1,9 @@
 package client
 
 import (
+	"os"
+
+	"github.com/RafPe/go-newrelic/core/requests"
 	resty "gopkg.in/resty.v1"
 )
 
@@ -16,7 +19,7 @@ type Client struct {
 	Resty  *resty.Client
 }
 
-//New
+//New TODO:document
 func New(cfg Config) *Client {
 	svc := &Client{
 		Config: cfg,
@@ -26,4 +29,21 @@ func New(cfg Config) *Client {
 	svc.Resty.SetDebug(true)
 
 	return svc
+}
+
+//ExecuteRequest TODO:document
+func (cl *Client) ExecuteRequest(newRequest *requests.Nrq) (*resty.Response, error) {
+
+	req := cl.Resty.R().
+		SetQueryParams(map[string]string{
+			"limit":  "100",
+			"offset": "0",
+		}).
+		SetHeaders(newRequest.Headers).
+		SetHeader("X-Api-Key", os.Getenv("NEWRELIC_APIKEY")).
+		SetResult(newRequest.RequestModel)
+
+	resp, err := req.Execute(resty.MethodGet, "https://synthetics.newrelic.com/synthetics/api/v3/monitors")
+
+	return resp, err
 }
