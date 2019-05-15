@@ -35,13 +35,10 @@ func New(cfg Config) *Client {
 func (cl *Client) ExecuteRequest(newRequest *requests.Nrq) (*resty.Response, error) {
 
 	req := cl.Resty.R().
-		SetQueryParams(map[string]string{
-			"limit":  "100",
-			"offset": "0",
-		}).
+		SetQueryParams(newRequest.QueryParams).
 		SetHeaders(newRequest.Headers).
 		SetHeader("X-Api-Key", os.Getenv("NEWRELIC_APIKEY")).
-		SetResult(newRequest.RequestModel)
+		SetResult(newRequest.ResponseModel)
 
 	resp, err := req.Execute(resty.MethodGet, "https://synthetics.newrelic.com/synthetics/api/v3/monitors")
 

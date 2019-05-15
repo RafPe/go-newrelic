@@ -2,21 +2,24 @@ package syntehics
 
 //SyntethicMonitors describes monitors in new relic
 type SyntethicMonitors struct {
-	Monitors []struct {
-		ID           string   `json:"id"`
-		Name         string   `json:"name"`
-		Type         string   `json:"type"`
-		Frequency    int      `json:"frequency"`
-		URI          string   `json:"uri"`
-		Locations    []string `json:"locations"`
-		Status       string   `json:"status"`
-		SLAThreshold float32  `json:"slaThreshold"`
-		Options      struct {
-		} `json:"options"`
-		ModifiedAt string `json:"modifiedAt"`
-		CreatedAt  string `json:"createdAt"`
-		UserID     int    `json:"userId"`
-		APIVersion string `json:"apiVersion"`
-	} `json:"monitors"`
-	Count int `json:"count"`
+	Monitors []SyntethicMonitor `json:"monitors"`
+	Count    int                `json:"count"`
+}
+
+// SyntethicMonitor represents single monitor from New Relic
+type SyntethicMonitor struct {
+	ID           string   `json:"id,omitempty"`
+	Name         string   `json:"name,omitempty"`
+	Type         string   `json:"type,omitempty"`
+	Frequency    int      `json:"frequency,omitempty"`
+	URI          string   `json:"uri,omitempty"`
+	Locations    []string `json:"locations,omitempty"`
+	Status       string   `json:"status,omitempty"`
+	SLAThreshold float32  `json:"slaThreshold,omitempty"`
+	Options      struct {
+	} `json:"options,omitempty"`
+	ModifiedAt string `json:"modifiedAt,omitempty"`
+	CreatedAt  string `json:"createdAt,omitempty"`
+	UserID     int    `json:"userId,omitempty"`
+	APIVersion string `json:"apiVersion,omitempty"`
 }
