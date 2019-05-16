@@ -10,4 +10,6 @@ func main() {
 
 	x.GetAllMonitors()
 
+	x.GetMonitorById()
+
 }

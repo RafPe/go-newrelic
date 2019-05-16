@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/RafPe/go-newrelic/core/requests"
@@ -40,7 +41,7 @@ func (cl *Client) ExecuteRequest(newRequest *requests.Nrq) (*resty.Response, err
 		SetHeader("X-Api-Key", os.Getenv("NEWRELIC_APIKEY")).
 		SetResult(newRequest.ResponseModel)
 
-	resp, err := req.Execute(resty.MethodGet, "https://synthetics.newrelic.com/synthetics/api/v3/monitors")
+	resp, err := req.Execute(resty.MethodGet, fmt.Sprintf("%s/%s", cl.Config.Endpoint, newRequest.URLPath))
 
 	return resp, err
 }

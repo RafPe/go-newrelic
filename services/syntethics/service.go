@@ -29,7 +29,7 @@ func New() *Syntethics {
 func newClient() *Syntethics {
 	svc := &Syntethics{
 		Client: client.New(client.Config{
-			Endpoint: "x",
+			Endpoint: "https://synthetics.newrelic.com/synthetics/api/v3/monitors",
 		}),
 	}
 

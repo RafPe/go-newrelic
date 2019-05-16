@@ -22,6 +22,7 @@ func (c *Syntethics) GetAllMonitors() *SyntethicMonitors {
 		},
 		ResponseModel: &SyntethicMonitors{},
 		Headers:       nil,
+		URLPath:       "/",
 	}
 
 	// Executes first request to get all monitors.
@@ -69,4 +70,28 @@ func (c *Syntethics) GetAllMonitors() *SyntethicMonitors {
 	}
 
 	return nil
+}
+
+// GetMonitorById returns one monitor based on given id.
+func (c *Syntethics) GetMonitorById() *SyntethicMonitor {
+
+	newRequest := requests.Nrq{
+		Method:        "GET",
+		QueryParams:   nil,
+		ResponseModel: &SyntethicMonitor{},
+		Headers:       nil,
+		URLPath:       "/some-id",
+	}
+
+	// Executes first request to get all monitors.
+	resp, err := c.Client.ExecuteRequest(&newRequest)
+	if err != nil {
+		panic(err)
+	}
+
+	syntethicMonitorResp := resp.Result().(*SyntethicMonitor)
+
+	fmt.Println(syntethicMonitorResp)
+
+	return syntethicMonitorResp
 }
