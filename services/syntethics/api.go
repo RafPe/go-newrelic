@@ -2,6 +2,7 @@ package syntehics
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/RafPe/go-newrelic/core/requests"
@@ -22,7 +23,7 @@ func (c *Syntethics) GetAllMonitors() *SyntethicMonitors {
 		},
 		ResponseModel: &SyntethicMonitors{},
 		Headers:       nil,
-		URLPath:       "/",
+		URLPath:       "",
 	}
 
 	// Executes first request to get all monitors.
@@ -72,15 +73,15 @@ func (c *Syntethics) GetAllMonitors() *SyntethicMonitors {
 	return nil
 }
 
-// GetMonitorById returns one monitor based on given id.
-func (c *Syntethics) GetMonitorById() *SyntethicMonitor {
+// GetMonitorByID returns one monitor based on given id.
+func (c *Syntethics) GetMonitorByID(monitorID string) *SyntethicMonitor {
 
 	newRequest := requests.Nrq{
 		Method:        "GET",
 		QueryParams:   nil,
 		ResponseModel: &SyntethicMonitor{},
 		Headers:       nil,
-		URLPath:       "/some-id",
+		URLPath:       monitorID,
 	}
 
 	// Executes first request to get all monitors.
@@ -94,4 +95,27 @@ func (c *Syntethics) GetMonitorById() *SyntethicMonitor {
 	fmt.Println(syntethicMonitorResp)
 
 	return syntethicMonitorResp
+}
+
+// CreateSimpleMonitor
+func (c *Syntethics) CreateSimpleMonitor() {
+
+	resp, err := c.Client.Resty.R().
+		SetBody(&SyntethicMonitor{
+			Frequency: SyntethicMonitorFreq1m,
+			Name:      "api_test",
+			Type:      SyntethicMonitorSimple,
+			URI:       "https://google.com",
+			Locations: []string{
+				"AWS_EU_CENTRAL_1",
+				"AWS_EU_WEST_1",
+				"AWS_EU_WEST_2",
+				"AWS_EU_WEST_3",
+			},
+			Status: SyntethicMonitorEnabled,
+		}).
+		SetHeader("X-Api-Key", os.Getenv("NEWRELIC_APIKEY")).
+		Post("https://synthetics.newrelic.com/synthetics/api/v3/monitors")
+
+	fmt.Println(resp, err)
 }

@@ -10,6 +10,8 @@ func main() {
 
 	x.GetAllMonitors()
 
-	x.GetMonitorById()
+	x.GetMonitorByID("91d4a323-2dbd-xxx-995d-6663b44c5b62")
+
+	x.CreateSimpleMonitor()
 
 }
